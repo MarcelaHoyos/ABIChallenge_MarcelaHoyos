@@ -1,10 +1,10 @@
-# Use the official Python image from the Docker Hub
+# Use the official image as a parent image
 FROM python:3.8-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file into the container at /app
+# Copy only requirements.txt first to leverage Docker cache
 COPY requirements.txt .
 
 # Install any dependencies
@@ -20,4 +20,4 @@ EXPOSE 80
 ENV NAME World
 
 # Run app.py when the container launches
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["python", "main.py"]
