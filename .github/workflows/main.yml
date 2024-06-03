@@ -42,13 +42,24 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  deploy:
+  build-and-deploy-docker:
     needs: build-and-test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-fastapi-app .
+
+      - name: Run Docker container
+        run: |
+          docker run -d -p 8000:80 my-fastapi-app
 
       - name: Deploy to AWS
         env:
