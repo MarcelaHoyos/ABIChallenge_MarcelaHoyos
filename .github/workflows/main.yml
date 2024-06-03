@@ -1,6 +1,5 @@
 name: CI/CD Pipeline
 
-# Flujo de trabajo (se ejecuta en cada push al branch 'main')
 on:
   push:
     branches:
@@ -37,10 +36,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy to AWS
+        if: success()
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
-          zip function.zip app.py
+          echo "Deploying to AWS"
           #Aquí podríamos agregar comentarios
